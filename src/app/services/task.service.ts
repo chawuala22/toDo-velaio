@@ -1,6 +1,6 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {  Task } from '../interfaces/task';
+import {  DataTask, RequestTask, Task } from '../interfaces/task';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ urlBase: string = 'https://tasks-pearl.vercel.app/task'
 
 
   getTasks() {
-    return this._httpClient.get<Task[]>(this.urlBase);
+    return this._httpClient.get<RequestTask>(this.urlBase);
   }
 
   createTask(task : Task){
