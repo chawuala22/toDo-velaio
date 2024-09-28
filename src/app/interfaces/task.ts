@@ -1,6 +1,8 @@
 export interface Task {
+    id?:                string;
     name_task:          string;
-    deadline:           Date;
+    deadline:           string;
+    date_completed?:    string;
     state:              boolean;
     associated_persons: AssociatedPerson[];
 }
