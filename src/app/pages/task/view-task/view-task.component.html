@@ -1,1 +1,51 @@
-<p>view-task works!</p>
+<div class="container-view-task">
+  <div class="container-filters">Aqui van los filtros xdxdxd</div>
+  <div class="container-title">
+    <h3>Lista de tareas</h3>
+  </div>
+  <div class="container-card">
+    @for (task of array_task; track $index) {
+    <div class="card">
+      <div class="card-body d-flex flex-column gap-2">
+        <span>{{ $index + 1 }}.</span>
+        <span class="card-title d-flex justify-content-between"
+          ><h3>{{ task.name_task }}</h3>
+          <p
+            [ngClass]="task.state ? 'highlight-complete' : 'highlight-pending '"
+          >
+            {{ task.state === false ? "Pendiente" : "Completada" }}
+          </p></span
+        >
+        <div class="card-associated_persons">
+          <h5>Personas asociadas</h5>
+          <ul class="d-flex flex-column gap-2">
+            @for (associated_persons of task.associated_persons; track $index) {
+            <li>
+              {{ associated_persons.full_name }} -
+              {{ associated_persons.age }} year
+            </li>
+            }
+          </ul>
+        </div>
+        <div class="d-flex justify-content-between">
+          <p class="card-text">Fecha límite: {{ task.deadline }}</p>
+          @if (task.state) {
+          <p class="card-text">Fecha completada: {{ task.deadline }}</p>
+          }
+        </div>
+        <div class="btn-group">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="goToDetail(task.id)"
+          >
+            View
+          </button>
+        </div>
+      </div>
+    </div>
+    } @empty {
+    <h2>No registered tasks</h2>
+    }
+  </div>
+</div>
