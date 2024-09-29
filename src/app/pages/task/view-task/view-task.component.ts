@@ -24,7 +24,6 @@ export class ViewTaskComponent implements OnInit {
     this._serviceTask.getTasks().subscribe({
       next: (tasks) => {
         this.array_task = tasks.data;
-        console.log(this.array_task);
       },
       error: (error) => {
         console.error(error);

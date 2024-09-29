@@ -22,15 +22,15 @@
             @for (associated_persons of task.associated_persons; track $index) {
             <li>
               {{ associated_persons.full_name }} -
-              {{ associated_persons.age }} year
+              {{ associated_persons.age }} años
             </li>
             }
           </ul>
         </div>
         <div class="d-flex justify-content-between">
-          <p class="card-text">Fecha límite: {{ task.deadline }}</p>
+          <p class="card-text text-start">Fecha límite: {{ task.deadline }}</p>
           @if (task.state) {
-          <p class="card-text">Fecha completada: {{ task.deadline }}</p>
+          <p class="card-text text-end">Fecha completada: {{ task.date_completed }}</p>
           }
         </div>
         <div class="btn-group">
@@ -39,7 +39,7 @@
             class="btn btn-primary"
             (click)="goToDetail(task.id)"
           >
-            View
+            Ver tarea
           </button>
         </div>
       </div>

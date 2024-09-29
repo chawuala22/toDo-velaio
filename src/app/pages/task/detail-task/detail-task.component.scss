@@ -1,0 +1,19 @@
+.container {
+  @media (width<=768px) {
+    padding: 2%;
+  }
+  padding: 1%;
+  .card {
+    .card-body {
+      .card-associated_persons {
+        .row {
+          @media (width<=768px) {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+          }
+        }
+      }
+    }
+  }
+}

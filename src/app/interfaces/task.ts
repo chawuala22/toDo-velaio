@@ -17,6 +17,7 @@ export interface DataTask {
     id:                 string;
     name_task:          string;
     deadline:           string;
+    date_completed?:    string;
     state:              boolean;
     associated_persons: AssociatedPerson[];
 }
