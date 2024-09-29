@@ -45,8 +45,12 @@ export class CreateTaskComponent {
     return this.fb.group({
       full_name: ['', [Validators.required, Validators.minLength(5)]],
       age: ['', [Validators.required, Validators.min(19)]],
-      skills: this.fb.array([this.fb.control('', Validators.required)]),
+      skills: this.fb.array([this.createSkill()]), // Inicializa con al menos una habilidad
     });
+  }
+
+  createSkill(): AbstractControl {
+    return this.fb.control('', Validators.required); // Asegura que cada habilidad sea requerida
   }
 
   get associated_persons(): FormArray {
@@ -66,12 +70,17 @@ export class CreateTaskComponent {
   }
 
   addSkill(personIndex: number): void {
-    this.getSkills(personIndex).push(this.fb.control(''));
+    const skills = this.getSkills(personIndex);
+    // Solo agrega habilidad si no está vacía
+    if (skills.controls.every(skill => skill.value)) {
+      skills.push(this.createSkill());
+    }
   }
 
   removeSkill(personIndex: number, skillIndex: number): void {
     this.getSkills(personIndex).removeAt(skillIndex);
   }
+
   uniqueNamesValidator(formArray: AbstractControl): { [key: string]: boolean } | null {
     const names = formArray.value.map((person: any) => person.full_name?.toLowerCase().trim());
     const uniqueNames = new Set(names);
@@ -87,11 +96,13 @@ export class CreateTaskComponent {
     if (this.taskForm.valid) {
       this._serviceTask.createTask(this.taskForm.value).subscribe({
         next: () => {
-          Swal.fire('Se ha creado la tarea con exito')
+          Swal.fire('Se ha creado la tarea con éxito');
           this.router.navigate(['/']);
         },
         error: (error) => console.error(error),
       });
+    } else {
+      Swal.fire('Por favor completa todos los campos obligatorios');
     }
   }
 }
