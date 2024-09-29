@@ -1,1 +1,167 @@
-<p>create-task works!</p>
+<div class="container d-flex flex-column gap-2">
+  <h3>Crear tarea</h3>
+  <form [formGroup]="taskForm" (ngSubmit)="saveTask()">
+    <fieldset>
+      <div class="row">
+        <div class="col">
+          <label for="name_task">Nombre de la tarea:</label>
+          <input
+            id="name_task"
+            formControlName="name_task"
+            class="form-control"
+          />
+          @if (taskForm.get('name_task')?.invalid &&
+          taskForm.get('name_task')?.touched) {
+          <div>
+            <small class="error">El nombre de la tarea es requerido.</small>
+          </div>
+          }
+        </div>
+        <div class="col">
+          <label for="deadline">Fecha límite:</label>
+          <input
+            id="deadline"
+            formControlName="deadline"
+            type="date"
+            class="form-control"
+          />
+          @if (taskForm.get('deadline')?.invalid &&
+          taskForm.get('deadline')?.touched) {
+          <div>
+            <small class="error">La fecha límite es requerida.</small>
+          </div>
+          }
+        </div>
+      </div>
+
+      <fieldset formArrayName="associated_persons">
+        <div class="mb-4">
+          <legend>Personas Asociadas</legend>
+          <button
+            type="button"
+            class="btn btn-primary w-auto"
+            (click)="addPerson()"
+          >
+            Añadir Persona
+          </button>
+        </div>
+        @for (person of associated_persons.controls; track $index) {
+        <ng-container [formGroupName]="$index">
+          <div class="row mb-4">
+            <div class="col">
+              <label for="full_name-{{ $index }}">Nombre completo:</label>
+              <input
+                id="full_name-{{ $index }}"
+                formControlName="full_name"
+                class="form-control"
+              />
+              @if (associated_persons.at($index).get('full_name')?.invalid &&
+              associated_persons.at($index).get('full_name')?.touched) {
+              <div>
+                @if
+                (associated_persons.at($index).get('full_name')?.errors?.['required'])
+                {
+                <small class="error">El nombre es requerido.</small>
+                } @if
+                (associated_persons.at($index).get('full_name')?.errors?.['minlength'])
+                {
+                <small class="error"
+                  >El nombre debe tener al menos 5 caracteres.</small
+                >
+                }
+              </div>
+              }
+            </div>
+
+            <div class="col">
+              <label for="age-{{ $index }}">Edad:</label>
+              <input
+                id="age-{{ $index }}"
+                formControlName="age"
+                type="number"
+                class="form-control"
+              />
+              @if (associated_persons.at($index).get('age')?.invalid &&
+              associated_persons.at($index).get('age')?.touched) {
+              <div>
+                @if
+                (associated_persons.at($index).get('age')?.errors?.['required'])
+                {
+                <small class="error">La edad es requerida.</small>
+                } @if
+                (associated_persons.at($index).get('age')?.errors?.['min']) {
+                <small class="error">Debe ser mayor de 18 años.</small>
+                }
+              </div>
+              }
+            </div>
+
+            <div class="p-4" formArrayName="skills">
+              <div class="d-flex justify-content-between">
+                <h4>Habilidades</h4>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="addSkill($index)"
+                >
+                  Añadir Habilidad
+                </button>
+              </div>
+              @for (skill of getSkills($index).controls; track skill; let idx =
+              $index) {
+              <ng-container>
+                <div class="row d-flex flex-row align-items-end mb-4">
+                  <div class="col">
+                    <label>Habilidad:</label>
+                    <input [formControlName]="idx" class="form-control" />
+                  </div>
+                  <div class="col">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      (click)="removeSkill($index, idx)"
+                    >
+                      Eliminar Habilidad
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
+              } @if (getSkills($index).invalid && getSkills($index).touched) {
+              <div>
+                <small class="error">Debe tener al menos una habilidad.</small>
+              </div>
+              }
+            </div>
+
+            <div class="d-flex justify-content-center">
+              <button
+                type="button"
+                class="btn btn-danger mx-4"
+                (click)="removePerson($index)"
+              >
+                Eliminar Persona
+              </button>
+            </div>
+          </div>
+        </ng-container>
+        } @if (taskForm.get('associated_persons')?.errors?.['nonUniqueNames']) {
+        <div>
+          <small class="error"
+            >Los nombres de las personas no deben repetirse.</small
+          >
+        </div>
+        }
+      </fieldset>
+    </fieldset>
+
+    <div class="d-flex justify-content-end mt-4">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="taskForm.invalid || associated_persons.length === 0"
+      >
+        Guardar Tarea
+      </button>
+    </div>
+  </form>
+</div>
