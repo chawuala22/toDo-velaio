@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TaskService } from '../../../services/task.service';
 import { DataTask } from '../../../interfaces/task';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-detail-task',
@@ -54,6 +55,7 @@ export class DetailTaskComponent implements OnInit {
     });
     this._serviceTask.updateTask(this.url, task).subscribe({
       next: () => {
+        Swal.fire('Se ha completado la tarea con exito')
         this._router.navigate(['/']);
       },
       error: (err) => {
@@ -64,6 +66,7 @@ export class DetailTaskComponent implements OnInit {
   deleteTask(id: string) {
     this._serviceTask.deleteTask(id).subscribe({
       next: () => {
+        Swal.fire('Se ha eliminado la tarea con exito')
         this._router.navigate(['/']);
       },
       error: (err) => {

@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { TaskService } from '../../../services/task.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-task',
@@ -86,6 +87,7 @@ export class CreateTaskComponent {
     if (this.taskForm.valid) {
       this._serviceTask.createTask(this.taskForm.value).subscribe({
         next: () => {
+          Swal.fire('Se ha creado la tarea con exito')
           this.router.navigate(['/']);
         },
         error: (error) => console.error(error),
